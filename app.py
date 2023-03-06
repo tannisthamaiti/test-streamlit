@@ -19,12 +19,14 @@ results = objective(x, y)
 # Main layout begins here
 
 st.title("""
-Three key findings from the 2022 UN Population Prospects
+Welcome to the interactive optimizer plotter
 """)
 
 st.write("""
-The UN releases an update of its World Population Prospects every two years. 
-Its latest release was delayed due to the COVID-19 pandemic and was released in 2022.
+This Streamlit application is a live optimizer plotter that visualizes four optimizing algorithms: Adam, SGD with momentum, RMSprop, and Adamax. 
+The app allows users to adjust the steps size, average gradient, and average squared gradient for each optimizer and see the resulting optimization process in real-time. 
+The main layout consists of a 3D surface plot of the objective function, and below it, there are four columns representing each optimizer with sliders for adjusting the hyperparameters. 
+The app uses various libraries such as NumPy, Pandas, Plotly, Matplotlib, and custom utilities to perform the optimization process.
 """)
 placeholder2 = st.empty()
 coll1, coll2, coll3 = st.columns(3,gap="medium")
@@ -53,7 +55,7 @@ st.markdown("---")
 np.random.seed(1)
 
 # define the total iterations
-n_iter = 60
+n_iter = 25
 
 placeholder1 = st.empty()
 with placeholder1.container():
