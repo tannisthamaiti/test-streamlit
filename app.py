@@ -2,9 +2,9 @@ import streamlit as st
 import numpy as np
 import time
 import pandas as pd
-import plotly.graph_objs as go
+#import plotly.graph_objs as go
 from matplotlib import pyplot as plt
-import plotly.express as px
+#import plotly.express as px
 from utils import adamax, objective, derivative, gradient_descent,adam, rmsprop
 st.set_page_config(page_title=None, page_icon=None, layout="wide")
 # define range for input
@@ -108,12 +108,13 @@ with placeholder1.container():
         st.write('steps size:', values)
         step_size = values
         # factor for average gradient
-        values = st.slider('Select a range of values',0.0, 1.99, 0.01)
+        values = st.slider('Select a range of values',0.99, 1.99, 0.01)
         st.write('rho:', values)
         rho = values
         
         # perform the gradient descent search with adam
         solutions = rmsprop(objective, derivative, bounds, n_iter, step_size, rho)
+        solutions = np.load('solutionsrmsprop.npy')
         solutions = np.asarray(solutions)
         x_rmsprop=solutions[:, 0]
         y_rmsprop=solutions[:, 1]
@@ -128,7 +129,7 @@ with placeholder1.container():
         st.write('average gradient:', values)
         beta1 = values
         # factor for average squared gradient
-        values = st.slider('Select a range of values', 0.01, 1.99, 0.01)
+        values = st.slider('Select a range of values', 0.0, 1.99, 0.01)
         st.write('average squared gradient:', values)
         beta2 = values
 
@@ -148,8 +149,8 @@ xaxis = np.arange(bounds[0,0], bounds[0,1], 0.1)
 
 
 
-for i in range(60):
-    
+for i in range(n_iter):
+    progress_bar.progress(i)
     with placeholder.container():
         fig_col1, fig_col2  = st.columns(2)
         with fig_col1:
@@ -158,18 +159,22 @@ for i in range(60):
             ax.contourf(x, y, results, levels=50, cmap='jet')
             ax.plot(x_adam[i], y_adam[i],'.-', color='w', markersize=12)
             fig1=st.pyplot(fig)
+            plt.close('all')
             
             st.markdown("#### SGD")
             fig, ax = plt.subplots()
             ax.contourf(x, y, results, levels=50, cmap='jet')
             ax.plot(x_sgd[i], y_sgd[i],'.-', color='w', markersize=12)
             fig1=st.pyplot(fig)
+            plt.close('all')
         with fig_col2:
             st.markdown("#### Rmsprop")
             fig, ax = plt.subplots()
             ax.contourf(x, y, results, levels=50, cmap='jet')
+            #print(x_rmsprop[i], y_rmsprop[i])
             ax.plot(x_rmsprop[i], y_rmsprop[i],'.-', color='w', markersize=12)
             fig1=st.pyplot(fig)
+            plt.close('all')
             
             st.markdown("#### Adamax")
             fig, ax = plt.subplots()
@@ -180,6 +185,7 @@ for i in range(60):
             
     
 st.balloons()
+
 
 
  
