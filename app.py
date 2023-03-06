@@ -14,7 +14,7 @@ yaxis = np.arange(bounds[1,0], bounds[1,1], 0.1)
 x, y = np.meshgrid(xaxis, yaxis)
     # create a mesh from the axis
 results = objective(x, y)
-    
+
 
 # Main layout begins here
 
@@ -23,16 +23,15 @@ Welcome to the interactive optimizer plotter
 """)
 
 st.write("""
-This Streamlit application is a live optimizer plotter that visualizes four optimizing algorithms: Adam, SGD with momentum, RMSprop, and Adamax. 
-The app allows users to adjust the steps size, average gradient, and average squared gradient for each optimizer and see the resulting optimization process in real-time. 
-The main layout consists of a 3D surface plot of the objective function, and below it, there are four columns representing each optimizer with sliders for adjusting the hyperparameters. 
+This Streamlit application is a live optimizer plotter that visualizes four optimizing algorithms: Adam, SGD with momentum, RMSprop, and Adamax.
+The app allows users to adjust the steps size, average gradient, and average squared gradient for each optimizer and see the resulting optimization process in real-time.
+The main layout consists of a 3D surface plot of the objective function, and below it, there are four columns representing each optimizer with sliders for adjusting the hyperparameters.
 The app uses various libraries such as NumPy, Pandas, Plotly, Matplotlib, and custom utilities to perform the optimization process.
 """)
 placeholder2 = st.empty()
 coll1, coll2, coll3 = st.columns(3,gap="medium")
 with coll1:
-    st.markdown('#### Objective Function')
-    # define range for input
+    st.markdown('#### Objective Function')# define range for input
     r_min, r_max = -1.0, 1.0
     # sample input range uniformly at 0.1 increments
     xaxis1 = np.arange(r_min, r_max, 0.1)
@@ -50,7 +49,7 @@ with coll1:
     st.pyplot(figure)
 st.markdown("---")
 
-        
+
 #############################################################
 np.random.seed(1)
 
@@ -66,19 +65,19 @@ with placeholder1.container():
         values = st.slider(
             'Select a range of values',
             0.0, 0.1, 0.02)
-        st.write('steps size:', values)
+        st.write('alpha:', values)
         alpha = values
         # factor for average gradient
         values = st.slider(
             'Select a range of values',
             0.0, 1.0, 0.1)
-        st.write('average gradient:', values)
+        st.write('beta:', values)
         beta1 = values
         # factor for average squared gradient
         values = st.slider(
             'Select a range of values',
             0.0, 1.0, 0.001)
-        st.write('average squared gradient:', values)
+        st.write('beta2:', values)
         beta2 = values
 
         # perform the gradient descent search with adam
@@ -102,7 +101,7 @@ with placeholder1.container():
         y_sgd=solutions[:, 1]
 
         # perform the gradient descent search with adam
-        
+
     with col3:
         st.write ('Rmsprop ')
         # steps size
@@ -113,7 +112,7 @@ with placeholder1.container():
         values = st.slider('Select a range of values',0.99, 1.99, 0.01)
         st.write('rho:', values)
         rho = values
-        
+
         # perform the gradient descent search with adam
         solutions = rmsprop(objective, derivative, bounds, n_iter, step_size, rho)
         solutions = np.load('solutionsrmsprop.npy')
@@ -124,15 +123,15 @@ with placeholder1.container():
         st.write ('Adamax ')
         # steps size
         values = st.slider('Select a range of values',0.0, 0.8, 0.01)
-        st.write('steps size:', values)
+        st.write('alpha:', values)
         alpha = values
         # factor for average gradient
         values = st.slider('Select a range of values',0.0, 1.2, 0.2)
-        st.write('average gradient:', values)
+        st.write('beta1:', values)
         beta1 = values
         # factor for average squared gradient
         values = st.slider('Select a range of values', 0.0, 1.99, 0.01)
-        st.write('average squared gradient:', values)
+        st.write('beta2:', values)
         beta2 = values
 
         # perform the gradient descent search with adam
@@ -140,7 +139,7 @@ with placeholder1.container():
         solutions = np.asarray(solutions)
         x_adamax=solutions[:, 0]
         y_adamax=solutions[:, 1]
-        
+
 ################################################################################################
 
 
@@ -162,7 +161,7 @@ for i in range(n_iter):
             ax.plot(x_adam[i], y_adam[i],'.-', color='w', markersize=12)
             fig1=st.pyplot(fig)
             plt.close('all')
-            
+
             st.markdown("#### SGD")
             fig, ax = plt.subplots()
             ax.contourf(x, y, results, levels=50, cmap='jet')
@@ -177,17 +176,13 @@ for i in range(n_iter):
             ax.plot(x_rmsprop[i], y_rmsprop[i],'.-', color='w', markersize=12)
             fig1=st.pyplot(fig)
             plt.close('all')
-            
+
             st.markdown("#### Adamax")
             fig, ax = plt.subplots()
             ax.contourf(x, y, results, levels=50, cmap='jet')
             ax.plot(x_adamax[i], y_adamax[i],'.-', color='w', markersize=12)
             fig1=st.pyplot(fig)
-        
-            
-    
+
+
+
 st.balloons()
-
-
-
- 
